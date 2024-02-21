@@ -2,12 +2,10 @@ import { Button } from "@/components/ui/button"
 
 const Home = () => {
   return (
-    <div className='font-semibold text-green-300'>
-      Hello Auth!
-      <Button size={'lg'} variant={'secondary'}
-      >Button</Button>
+    <main className="flex h-full flex-col
+    items-center justify-center">
 
-    </div>
+    </main>
   );
 }
 export default Home;
