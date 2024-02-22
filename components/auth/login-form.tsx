@@ -29,8 +29,8 @@ const LoginForm = () => {
     const submit = (data: z.infer<typeof LoginSchema>) => {
         startTransition(()=> {
             login(data).then((res)=>{
-                setError(data.error)
-                setSuccess(data.success)
+                setError(res.error)
+                setSuccess(res.success)
             })
         })
     }
