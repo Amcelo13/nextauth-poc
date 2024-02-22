@@ -15,7 +15,7 @@ export const CardWrapper = (props: CardWrapperProps) => {
     const { children, headerLabel, backButtonLabel, backButtonHref, showSocial } = props
 
     return (
-        <Card className="w-[400px] shadow-md">
+        <Card className="w-[500px] shadow-md">
             <CardHeader>
                 <Header label={headerLabel} />
             </CardHeader>
