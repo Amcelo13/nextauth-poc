@@ -52,11 +52,11 @@ const RegisterForm = () => {
                         <FormField control={control} name={'name'}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel htmlFor='email' className='text-semibold text-3xl'>Name</FormLabel>
+                                    <FormLabel className='text-semibold text-3xl'>Name</FormLabel>
                                     <FormControl>
                                         <Input disabled={isPending} {...field} placeholder='John Doe' />
                                     </FormControl>
-                                    <FormMessage className='text-xl'>{errors.email?.message}</FormMessage>
+                                    <FormMessage className='text-xl'>{errors.name?.message}</FormMessage>
                                 </FormItem>
                             )
                             } />
@@ -89,7 +89,7 @@ const RegisterForm = () => {
                                     <FormControl>
                                         <Input disabled={isPending} {...field} type='password' />
                                     </FormControl>
-                                    <FormMessage  className='text-xl'>{errors.password?.message}</FormMessage>
+                                    <FormMessage  className='text-xl'>{errors.confirmPassword?.message}</FormMessage>
                                 </FormItem>
                             )
                             } />
