@@ -12,13 +12,15 @@ import { FormError } from '@/components/form-error'
 import { FormSucess } from '@/components/form-success'
 import { register as register_server_action } from '@/actions/register'
 import { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 
 const RegisterForm = () => {
+    const router = useRouter()
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
-    const method = useForm<z.infer<typeof RegisterSchema>>({
-        resolver: zodResolver(RegisterSchema),
+    const method:any = useForm<z.infer<typeof RegisterSchema>>({ 
+        resolver: zodResolver(RegisterSchema), 
         defaultValues: {
             email: '',
             password: '',
@@ -35,6 +37,10 @@ const RegisterForm = () => {
             register_server_action(data).then((res) => {
                 setError(res.error)
                 setSuccess(res.success)
+                if(res.success) {
+                    reset()
+                    router.push('/auth/login')
+                }
             })
         })
     }
