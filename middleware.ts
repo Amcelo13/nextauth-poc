@@ -18,7 +18,7 @@ export default auth((req) => {
     }
 
     if(isAuthRoute){
-        if(isLoggedIn) Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))  // ,nextURL for absolute path
+        if(isLoggedIn) NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))  // ,nextURL for absolute path
         return NextResponse.next()
     }
 
