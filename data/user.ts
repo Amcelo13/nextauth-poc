@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 
 export const getUserByEmail = async(email: string) => {
+    if(!email) throw new Error("Email is required")
     try{
         const user = db.user.findUnique({
             where: {
@@ -15,6 +16,7 @@ export const getUserByEmail = async(email: string) => {
 }
 
 export const getUserEmailId = async(id : string) => {
+    if(!id) throw new Error("Id is required")
     try{
         const user = db.user.findUnique({
             where: {id}
