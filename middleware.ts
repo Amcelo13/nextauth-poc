@@ -1,39 +1,53 @@
-// import { auth } from "@/auth"
-import authConfig from "./auth.config"
-import NextAuth from "next-auth"
-const { auth } = NextAuth(authConfig)
-import { apiAuthPrefix, AuthRoutes, DEFAULT_LOGIN_REDIRECT, PublicRoutes } from './routes'
-import { NextResponse } from "next/server"
+import NextAuth from "next-auth";
+
+import authConfig from "@/auth.config";
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  publicRoutes,
+} from "@/routes";
+import { NextResponse } from "next/server";
+
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
-    const { nextUrl } = req;
-    const isLoggedIn = !!req.auth;
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
 
-    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-    const isPublicRoute = PublicRoutes.includes(nextUrl.pathname);
-    const isAuthRoute = AuthRoutes.includes(nextUrl.pathname);
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-    if (isApiAuthRoute) {
-        return NextResponse.next()
+  if (isApiAuthRoute) {
+    return NextResponse.next();
+  }
+
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+    }
+    return NextResponse.next();
+  }
+
+  if (!isLoggedIn && !isPublicRoute) {
+    let callbackUrl = nextUrl.pathname;
+    if (nextUrl.search) {
+      callbackUrl += nextUrl.search;
     }
 
-    if(isAuthRoute){
-        if(isLoggedIn) NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))  // ,nextURL for absolute path
-        return NextResponse.next()
-    }
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
-    if(!isLoggedIn && !isPublicRoute){
-        return NextResponse.redirect(new URL('/auth/login', nextUrl))
-    }
-    return NextResponse.next()
+    return NextResponse.redirect(new URL(
+      `/auth/login?callbackUrl=${encodedCallbackUrl}`,
+      nextUrl
+    ));
+  }
 
+  return NextResponse.next();
 })
-
-
-
-
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {
-    matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 }
