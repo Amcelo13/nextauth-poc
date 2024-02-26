@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { NewPasswordSchema } from "@/schemas";
@@ -25,7 +25,7 @@ import { newPassword } from "@/actions/new-password";
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-
+  const router  = useRouter();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -46,6 +46,11 @@ export const NewPasswordForm = () => {
         .then((data) => {
           setError(data?.error);
           setSuccess(data?.success);
+          if (data?.success) {
+            setTimeout(() => {
+              router.push("/auth/login");
+            }, 2000);
+          }
         });
     });
   };
