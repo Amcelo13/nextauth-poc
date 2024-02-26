@@ -80,6 +80,10 @@ NEXT_PUBLIC_APP_URL=
 ```shell
 npx prisma generate
 npx prisma db push
+npx prisma studio
+npx prisma migrate dev 
+npx prisma migrate reset
+
 ```
 
 ### Start the app

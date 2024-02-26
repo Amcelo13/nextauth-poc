@@ -37,6 +37,7 @@ export const {
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) return false;
 
+      // Prevent sign in without two factor confirmation
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
 
